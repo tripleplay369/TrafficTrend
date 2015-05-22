@@ -9,6 +9,10 @@
     "default_icon": "default.png",
     "default_popup": "popup.html"
   },
+  "background": {
+    "scripts": ["traffic.js"],
+    "persistent": true
+  },
   "permissions": [
     "activeTab",
     "https://ajax.googleapis.com/"

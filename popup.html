@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <style>
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+        width: 477px;
+      }
+      input {
+        display: inline-block;
+        width: 400px;
+        height: 20px;
+      }
+      .label {
+        display: inline-block;
+        font-size: 10px;
+        padding-right: 10px;
+        width: 65px;
+      }
+      .check1{
+          position: absolute;
+          color: green;
+          right: 15px;
+          top: 10px;
+      }
+      .x1{
+          position: absolute;
+          color: red;
+          right: 15px;
+          top: 10px;
+      }
+      .check2{
+          position: absolute;
+          color: green;
+          right: 15px;
+          top: 38px;
+      }
+      .x2{
+          position: absolute;
+          color: red;
+          right: 15px;
+          top: 38px;
+      }
+      .padding{
+        height: 0;
+        width: 0;
+        padding-bottom: 9px;
+      }
+
+    </style>
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <div class="label">Start Address</div><input id="start" type="text"><div class="check1">&#x2713;</div><div class="x1">&#x2716;</div></input><div class="padding"></div>
+    <div class="label">End Address</div><input id="end" type="text"><div class="check2">&#x2713;</div><div class="x2">&#x2716;</div></input>
+  </body>
+</html>
