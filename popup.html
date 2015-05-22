@@ -47,11 +47,23 @@
         padding-bottom: 9px;
       }
 
+      .hidden{
+        display: none;
+      }
+
+      .red-border{
+        border: 2px red solid;
+      }
+
+      .green-border{
+        border: 2px green solid;
+      }
+
     </style>
     <script src="popup.js"></script>
   </head>
   <body>
-    <div class="label">Start Address</div><input id="start" type="text"><div class="check1">&#x2713;</div><div class="x1">&#x2716;</div></input><div class="padding"></div>
-    <div class="label">End Address</div><input id="end" type="text"><div class="check2">&#x2713;</div><div class="x2">&#x2716;</div></input>
+    <div class="label">Start Address</div><input id="start" type="text"><div id="check1" class="check1 hidden">&#x2713;</div><div id="x1" class="x1 hidden">&#x2716;</div></input><div class="padding"></div>
+    <div class="label">End Address</div><input id="end" type="text"><div id="check2" class="check2 hidden">&#x2713;</div><div id="x2" class="x2 hidden">&#x2716;</div></input>
   </body>
 </html>
