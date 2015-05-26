@@ -84,14 +84,23 @@ window.initialize = function(){
 
   var changeFunction = function(){
     var address = this.value
+    var el = this
     
     geocoder = new google.maps.Geocoder()
     geocoder.geocode({'address': address}, function(results, status){
       if(status == "OK" && results.length == 1){
-        console.log(results)
+        var formatted = results[0].formatted_address
+        var data = {}
+        data[el.id] = formatted
+        chrome.storage.sync.set(data, function() {
+          el.value = formatted
+          goodInput(el.id)
+        })
       }
       else{
-        ;
+        chrome.storage.sync.remove(el.id, function(){
+          badInput(el.id)
+        })
       }
     })
   }
