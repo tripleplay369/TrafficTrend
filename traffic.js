@@ -3,7 +3,7 @@ window.trafficHistory = []
 function run() {
   var interval = 60000
   var retryInterval = 5000
-  var maxHistoryLength = 30
+  var maxHistoryLength = 100
 
   chrome.storage.sync.get(['start', 'end'], function(items){
     if(items['start'] && items['end']){
@@ -35,3 +35,9 @@ function run() {
 }
 
 run()
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+  if(request.type == "get_history"){
+    sendResponse({history: window.trafficHistory})
+  }
+})
