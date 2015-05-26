@@ -1,4 +1,7 @@
-setInterval(function(){
+function run() {
+  var interval = 60000
+  var retryInterval = 5000
+
   chrome.storage.sync.get(['start', 'end'], function(items){
     if(items['start'] && items['end']){
       var start = items['start']
@@ -15,7 +18,15 @@ setInterval(function(){
       if(parsed.resourceSets.length > 0){
         var time = parsed.resourceSets[0].resources[0].travelDurationTraffic
         chrome.browserAction.setBadgeText({text: (time/60).toFixed(0)})
+        console.log("good")
+        setTimeout(run, interval)
+      }
+      else{
+        console.log("bad")
+        setTimeout(run, retryInterval)
       }
     }
   })
-}, 5000) // 5 minutes
+}
+
+run()
