@@ -2,7 +2,7 @@ window.trafficHistory = []
 
 function run() {
   var interval = 60000
-  var retryInterval = 5000
+  var retryInterval = 1000
   var maxHistoryLength = 100
 
   chrome.storage.sync.get(['start', 'end'], function(items){
