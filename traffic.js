@@ -17,12 +17,10 @@ function run() {
       var parsed = JSON.parse(xhr.response)
       if(parsed.resourceSets.length > 0){
         var time = parsed.resourceSets[0].resources[0].travelDurationTraffic
-        chrome.browserAction.setBadgeText({text: (time/60).toFixed(0)})
-        console.log("good")
+        chrome.browserAction.setBadgeText({text: (time / 60).toFixed(0)})
         setTimeout(run, interval)
       }
       else{
-        console.log("bad")
         setTimeout(run, retryInterval)
       }
     }
