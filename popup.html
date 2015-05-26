@@ -5,6 +5,7 @@
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
         width: 477px;
+        height: 200px;
       }
       input {
         display: inline-block;
@@ -59,11 +60,21 @@
         border: 2px #3eb81d solid;
       }
 
+      .chart{
+        position: absolute;
+        left: 9px;
+        right: 10px;
+        bottom: 10px;
+        top: 67px;
+        background: blue;
+      }
+
     </style>
     <script src="popup.js"></script>
   </head>
   <body>
     <div class="label">Start Address</div><input id="start" type="text"><div id="check1" class="check1 hidden">&#x2713;</div><div id="x1" class="x1 hidden">&#x2716;</div></input><div class="padding"></div>
     <div class="label">End Address</div><input id="end" type="text"><div id="check2" class="check2 hidden">&#x2713;</div><div id="x2" class="x2 hidden">&#x2716;</div></input>
+    <canvas id="chart" class="chart" width="474" height="139"></canvas>
   </body>
 </html>
