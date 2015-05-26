@@ -109,33 +109,39 @@ window.initialize = function(){
   endEl.onchange = changeFunction
 
   chrome.runtime.sendMessage({type: "get_history"}, function(response){
+    var maxNumLabels = 5
+
     var canvas = document.getElementById("chart")
     var context = canvas.getContext("2d")
 
     var history = response.history
 
-    var now = Date.now()
+    if(history.length >= 2){
+      var now = Date.now()
 
-    var dataArray = []
-    var labelArray = []
-    for(var i = 0; i < history.length; ++i){
-      dataArray.push(history[i].trafficTime / 60)
+      var dataArray = []
+      var labelArray = []
+      for(var i = 0; i < history.length; ++i){
+        dataArray.push(history[i].trafficTime / 60)
 
-      var minutes = ((now - history[i].timestamp) / 60000).toFixed(0)
-      labelArray.push("t-" + minutes + "m")
+        var minutes = ((now - history[i].timestamp) / 60000).toFixed(0)
+        var shouldLabel = (i % Math.ceil(history.length / maxNumLabels) == 0) || history.length <= maxNumLabels
+        labelArray.push(shouldLabel ? ("-" + minutes + "m") : "")
+      }
+
+      var data = {
+        labels: labelArray,
+        datasets: [
+          {
+            data: dataArray,
+            strokeColor: "rgba(151,151,151,1)"
+          }
+        ]
+      }
+
+      var options = {showTooltips: false, bezierCurve: false, pointDot: false, datasetFill: false}
+
+      var lineChart = new Chart(context).Line(data, options)
     }
-
-    var data = {
-      labels: labelArray,
-      datasets: [
-        {
-          data: dataArray
-        }
-      ]
-    }
-
-    var options = {showTooltips: false}
-
-    var lineChart = new Chart(context).Line(data, options)
   })
 }
