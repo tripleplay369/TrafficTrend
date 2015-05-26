@@ -13,10 +13,11 @@
     "scripts": ["traffic.js"],
     "persistent": true
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com https://ecn.dev.virtualearth.net; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com https://ecn.dev.virtualearth.net https://dev.virtualearth.net; object-src 'self'",
   "permissions": [
     "storage",
     "activeTab",
-    "https://ajax.googleapis.com/"
+    "https://ajax.googleapis.com/",
+    "https://dev.virtualearth.net/"
   ]
 }
