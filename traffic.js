@@ -1,6 +1,9 @@
+window.trafficHistory = []
+
 function run() {
   var interval = 60000
   var retryInterval = 5000
+  var maxHistoryLength = 30
 
   chrome.storage.sync.get(['start', 'end'], function(items){
     if(items['start'] && items['end']){
@@ -16,7 +19,11 @@ function run() {
 
       var parsed = JSON.parse(xhr.response)
       if(parsed.resourceSets.length > 0){
+
         var time = parsed.resourceSets[0].resources[0].travelDurationTraffic
+        window.trafficHistory.push({timestamp: Date.now(), trafficTime: time})
+        window.trafficHistory = window.trafficHistory.slice(-1 * maxHistoryLength)
+
         chrome.browserAction.setBadgeText({text: (time / 60).toFixed(0)})
         setTimeout(run, interval)
       }
