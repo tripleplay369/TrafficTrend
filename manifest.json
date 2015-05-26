@@ -13,7 +13,7 @@
     "scripts": ["traffic.js"],
     "persistent": true
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com https://ecn.dev.virtualearth.net; object-src 'self'",
   "permissions": [
     "storage",
     "activeTab",
