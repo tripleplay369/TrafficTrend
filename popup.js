@@ -114,47 +114,28 @@ window.initialize = function(){
 
     var history = response.history
 
-    if(history.length >= 2){
-      var historyToShow = 1800000
-      var buffer = 20
+    var now = Date.now()
 
-      var maxTime = 0
-      var minTime = Number.MAX_VALUE
+    var dataArray = []
+    var labelArray = []
+    for(var i = 0; i < history.length; ++i){
+      dataArray.push(history[i].trafficTime / 60)
 
-      for(var i = 0; i < history.length; ++i){
-        var time = history[i].trafficTime
-        if(time > maxTime){
-          maxTime = time
-        }
-        if(time < minTime){
-          minTime = time
-        }
-      }
-
-      var width = canvas.width
-      var height = canvas.height - (2 * buffer)
-
-      var now = Date.now()
-      var begin = now - historyToShow
-
-      var range = maxTime - minTime
-
-      context.beginPath()
-      for(var i = 0; i < history.length; ++i){
-        var time = history[i].trafficTime
-        console.log(time)
-        var timestamp = history[i].timestamp
-
-        var y = range > 0 ? (((time - minTime) / range) * height) : (height / 2)
-        var x = ((timestamp - begin) / historyToShow) * width
-
-
-        if(i != 0){
-          context.lineTo(x, buffer + height - y)
-          context.stroke()
-        }
-        context.moveTo(x, buffer + height - y)
-      }
+      var minutes = ((now - history[i].timestamp) / 60000).toFixed(0)
+      labelArray.push("t-" + minutes + "m")
     }
+
+    var data = {
+      labels: labelArray,
+      datasets: [
+        {
+          data: dataArray
+        }
+      ]
+    }
+
+    var options = {showTooltips: false}
+
+    var lineChart = new Chart(context).Line(data, options)
   })
 }
