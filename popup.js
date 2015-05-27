@@ -58,6 +58,14 @@ window.badInput = function(inputName){
   addClass(els[0], 'red-border')
 }
 
+window.clearHistory = function(){
+  chrome.runtime.sendMessage({type: "clear_history"})
+}
+
+window.showNoDataMessage = function(){
+  removeClass(document.getElementById("nodata"), "hidden")
+}
+
 window.initialize = function(){
   startEl = document.getElementById("start")
   endEl = document.getElementById("end")
@@ -102,6 +110,12 @@ window.initialize = function(){
           badInput(el.id)
         })
       }
+
+      clearHistory()
+      var canvas = document.getElementById("chart")
+      var context = canvas.getContext("2d")
+      context.clearRect (0, 0, canvas.width, canvas.height)
+      showNoDataMessage()
     })
   }
 
@@ -142,6 +156,9 @@ window.initialize = function(){
       var options = {showTooltips: false, bezierCurve: false, pointDot: false, datasetFill: false}
 
       var lineChart = new Chart(context).Line(data, options)
+    }
+    else{
+      showNoDataMessage()
     }
   })
 }

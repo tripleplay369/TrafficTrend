@@ -69,6 +69,13 @@
         top: 67px;
       }
 
+      .nodata{
+        position: absolute;
+        top: 125px;
+        left: 23px;
+        font-size: 12px;
+      }
+
     </style>
     <script src="chart.js"></script>
     <script src="popup.js"></script>
@@ -77,5 +84,6 @@
     <div class="label">Start Address</div><input id="start" type="text"><div id="check1" class="check1 hidden">&#x2713;</div><div id="x1" class="x1 hidden">&#x2716;</div></input><div class="padding"></div>
     <div class="label">End Address</div><input id="end" type="text"><div id="check2" class="check2 hidden">&#x2713;</div><div id="x2" class="x2 hidden">&#x2716;</div></input>
     <canvas id="chart" class="chart" width="474" height="139"></canvas>
+    <div id="nodata" class="nodata hidden">Traffic history will be displayed once enough traffic data has been collected.</div>
   </body>
 </html>
