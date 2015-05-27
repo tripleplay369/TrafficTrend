@@ -1,4 +1,6 @@
 window.trafficHistory = []
+window.trend = "Constant"
+window.trendColor = "#e1d736"
 
 function updateIcon() {
   var minutesToCheck = 15
@@ -24,14 +26,20 @@ function updateIcon() {
   if(newest.trafficTime - closest.trafficTime < -thresholdTime){
     chrome.browserAction.setIcon({path: "green.png"})
     chrome.browserAction.setBadgeBackgroundColor({color: '#3eb81d'})
+    window.trend = "Decreasing"
+    window.trendColor = '#3eb81d'
   }
   else if(newest.trafficTime - closest.trafficTime > thresholdTime){
     chrome.browserAction.setIcon({path: "red.png"})
     chrome.browserAction.setBadgeBackgroundColor({color: '#bf1b1b'})
+    window.trend = "Increasing"
+    window.trendColor = '#bf1b1b'
   }
   else{
     chrome.browserAction.setIcon({path: "yellow.png"})
     chrome.browserAction.setBadgeBackgroundColor({color: '#e1d736'})
+    window.trend = "Constant"
+    window.trendColor = '#e1d736'
   }
 }
 
@@ -79,9 +87,11 @@ run()
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   if(request.type == "get_history"){
-    sendResponse({history: window.trafficHistory})
+    sendResponse({history: window.trafficHistory, trend: window.trend, trendColor: window.trendColor})
   }
   else if(request.type == "clear_history"){
     window.trafficHistory = []
+    window.trendColor = "#e1d736"
+    window.trend = "Constant"
   }
 })

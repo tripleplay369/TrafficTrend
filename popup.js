@@ -126,6 +126,10 @@ window.initialize = function(){
   endEl.onchange = changeFunction
 
   chrome.runtime.sendMessage({type: "get_history"}, function(response){
+    var trendValueEl = document.getElementById("trend-value")
+    trendValueEl.innerHTML = response.trend
+    trendValueEl.style.color = response.trendColor
+
     var maxNumLabels = 5
 
     var canvas = document.getElementById("chart")

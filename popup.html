@@ -5,7 +5,7 @@
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
         width: 477px;
-        height: 240px;
+        height: 270px;
       }
       input {
         display: inline-block;
@@ -71,7 +71,7 @@
 
       .nodata{
         position: absolute;
-        top: 135px;
+        top: 145px;
         left: 23px;
         font-size: 12px;
         color: rgb(102, 102, 102);
@@ -102,6 +102,22 @@
         left: 178px;
       }
 
+      .trend-label{
+        font-size: 12px;
+        position: absolute;
+        color: rgb(102, 102, 102);
+        top: 265px;
+        left: 178px;
+      }
+
+      .trend-value{
+        font-size: 12px;
+        position: absolute;
+        color: rgb(102, 102, 102);
+        top: 265px;
+        left: 261px;
+      }
+
     </style>
     <script src="chart.js"></script>
     <script src="popup.js"></script>
@@ -114,5 +130,6 @@
     <div id="axis-label" class="axis-label">Travel Time (m)</div>
     <div id="bottom-label" class="bottom-label">Time of Calulcation (m)</div>
     <div id="nodata" class="nodata hidden">Traffic history will be displayed once enough traffic data has been collected.</div>
+    <div class="trend-label">Traffic Trend:</div><div id="trend-value" class="trend-value">Constant</div>
   </body>
 </html>
