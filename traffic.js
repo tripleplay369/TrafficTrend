@@ -50,10 +50,15 @@ function run() {
 
       var xhr = new XMLHttpRequest()
       xhr.open("GET", url, false)
-      xhr.send()
 
-      var parsed = JSON.parse(xhr.response)
-      if(parsed.resourceSets.length > 0){
+      var parsed = null
+      try{
+        xhr.send()
+        parsed = JSON.parse(xhr.response)
+      }
+      catch(err){}
+
+      if(parsed && parsed.resourceSets.length > 0){
 
         var time = parsed.resourceSets[0].resources[0].travelDurationTraffic
         window.trafficHistory.push({timestamp: Date.now(), trafficTime: time})
