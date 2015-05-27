@@ -1,6 +1,6 @@
 window.trafficHistory = []
 window.trend = "Constant"
-window.trendColor = "#e1d736"
+window.trendColor = "#a59e27"
 
 function updateIcon() {
   var minutesToCheck = 15
@@ -25,9 +25,9 @@ function updateIcon() {
 
   if(newest.trafficTime - closest.trafficTime < -thresholdTime){
     chrome.browserAction.setIcon({path: "green.png"})
-    chrome.browserAction.setBadgeBackgroundColor({color: '#3eb81d'})
+    chrome.browserAction.setBadgeBackgroundColor({color: '#2f8d16'})
     window.trend = "Decreasing"
-    window.trendColor = '#3eb81d'
+    window.trendColor = '#2f8d16'
   }
   else if(newest.trafficTime - closest.trafficTime > thresholdTime){
     chrome.browserAction.setIcon({path: "red.png"})
@@ -37,16 +37,16 @@ function updateIcon() {
   }
   else{
     chrome.browserAction.setIcon({path: "yellow.png"})
-    chrome.browserAction.setBadgeBackgroundColor({color: '#e1d736'})
+    chrome.browserAction.setBadgeBackgroundColor({color: '#a59e27'})
     window.trend = "Constant"
-    window.trendColor = '#e1d736'
+    window.trendColor = '#a59e27'
   }
 }
 
 function run() {
   var interval = 60000
   var retryInterval = 1000
-  var maxHistoryLength = 15
+  var maxHistoryLength = 30
 
   chrome.storage.sync.get(['start', 'end'], function(items){
     if(items['start'] && items['end']){
@@ -91,7 +91,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   }
   else if(request.type == "clear_history"){
     window.trafficHistory = []
-    window.trendColor = "#e1d736"
+    window.trendColor = "#a59e27"
     window.trend = "Constant"
   }
 })
