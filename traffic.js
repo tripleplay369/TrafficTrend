@@ -64,7 +64,7 @@ function run() {
         window.trafficHistory.push({timestamp: Date.now(), trafficTime: time})
         window.trafficHistory = window.trafficHistory.slice(-1 * maxHistoryLength)
 
-        chrome.browserAction.setBadgeText({text: (time / 60).toFixed(0)})
+        chrome.browserAction.setBadgeText({text: (time / 60).toFixed(0) + "m"})
         updateIcon()
         setTimeout(run, interval)
       }
