@@ -1,6 +1,7 @@
 window.trafficHistory = []
-window.trend = "Constant"
+window.trend = ""
 window.trendColor = "#a59e27"
+window.currentInterval = null
 
 function updateIcon() {
   var minutesToCheck = 15
@@ -74,10 +75,10 @@ function run() {
 
         chrome.browserAction.setBadgeText({text: (time / 60).toFixed(0) + "m"})
         updateIcon()
-        setTimeout(run, interval)
+        window.currentInterval = setTimeout(run, interval)
       }
       else{
-        setTimeout(run, retryInterval)
+        window.currentInterval = setTimeout(run, retryInterval)
       }
     }
   })
@@ -90,8 +91,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     sendResponse({history: window.trafficHistory, trend: window.trend, trendColor: window.trendColor})
   }
   else if(request.type == "clear_history"){
+    clearInterval(window.currentInterval)
+
     window.trafficHistory = []
     window.trendColor = "#a59e27"
-    window.trend = "Constant"
+    window.trend = ""
+    chrome.browserAction.setIcon({path: "default.png"})
+
+    chrome.browserAction.setBadgeText({text: ""})
+
+    run()
   }
 })

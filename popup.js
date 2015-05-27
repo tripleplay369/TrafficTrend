@@ -119,6 +119,9 @@ window.initialize = function(){
       var context = canvas.getContext("2d")
       context.clearRect (0, 0, canvas.width, canvas.height)
       showNoDataMessage()
+
+      document.getElementById('time-value').innerHTML = ""
+      document.getElementById('trend-value').innerHTML = ""
     })
   }
 
