@@ -66,6 +66,7 @@ window.showNoDataMessage = function(){
   removeClass(document.getElementById("nodata"), "hidden")
   addClass(document.getElementById("title"), "hidden")
   addClass(document.getElementById("axis-label"), "hidden")
+  addClass(document.getElementById("bottom-label"), "hidden")
 }
 
 window.initialize = function(){
@@ -125,7 +126,7 @@ window.initialize = function(){
   endEl.onchange = changeFunction
 
   chrome.runtime.sendMessage({type: "get_history"}, function(response){
-    var maxNumLabels = 4
+    var maxNumLabels = 5
 
     var canvas = document.getElementById("chart")
     var context = canvas.getContext("2d")
@@ -142,7 +143,7 @@ window.initialize = function(){
 
         var minutes = ((now - history[i].timestamp) / 60000).toFixed(0)
         var shouldLabel = (i % Math.ceil(history.length / maxNumLabels) == 0) || history.length <= maxNumLabels
-        labelArray.push(shouldLabel ? ("-" + minutes + "m") : "")
+        labelArray.push(shouldLabel ? ("-" + minutes) : "")
       }
 
       var data = {

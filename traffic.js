@@ -38,7 +38,7 @@ function updateIcon() {
 function run() {
   var interval = 60000
   var retryInterval = 1000
-  var maxHistoryLength = 15
+  var maxHistoryLength = 30
 
   chrome.storage.sync.get(['start', 'end'], function(items){
     if(items['start'] && items['end']){

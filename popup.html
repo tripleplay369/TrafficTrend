@@ -5,7 +5,7 @@
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
         width: 477px;
-        height: 220px;
+        height: 240px;
       }
       input {
         display: inline-block;
@@ -90,8 +90,16 @@
         position: absolute;
         transform: rotate(-90deg);
         color: rgb(102, 102, 102);
-        top: 135px;
+        top: 145px;
         left: -21px;
+      }
+
+      .bottom-label{
+        font-size: 12px;
+        position: absolute;
+        color: rgb(102, 102, 102);
+        top: 230px;
+        left: 178px;
       }
 
     </style>
@@ -104,6 +112,7 @@
     <canvas id="chart" class="chart" width="434" height="139"></canvas>
     <div id="title" class="title">Traffic History</div>
     <div id="axis-label" class="axis-label">Travel Time (m)</div>
+    <div id="bottom-label" class="bottom-label">Time of Calulcation (m)</div>
     <div id="nodata" class="nodata hidden">Traffic history will be displayed once enough traffic data has been collected.</div>
   </body>
 </html>
