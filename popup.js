@@ -130,6 +130,11 @@ window.initialize = function(){
     trendValueEl.innerHTML = response.trend
     trendValueEl.style.color = response.trendColor
 
+    if(response.history.length > 0){
+      var timeValueEl = document.getElementById("time-value")
+      timeValueEl.innerHTML = (response.history[response.history.length - 1].trafficTime / 60).toFixed(0) + " min"
+    }
+
     var maxNumLabels = 5
 
     var canvas = document.getElementById("chart")
