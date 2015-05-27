@@ -128,52 +128,57 @@ window.initialize = function(){
   startEl.onchange = changeFunction
   endEl.onchange = changeFunction
 
-  chrome.runtime.sendMessage({type: "get_history"}, function(response){
-    var trendValueEl = document.getElementById("trend-value")
-    trendValueEl.innerHTML = response.trend
-    trendValueEl.style.color = response.trendColor
+  var refresh = function(){
+    chrome.runtime.sendMessage({type: "get_history"}, function(response){
+      var trendValueEl = document.getElementById("trend-value")
+      trendValueEl.innerHTML = response.trend
+      trendValueEl.style.color = response.trendColor
 
-    if(response.history.length > 0){
-      var timeValueEl = document.getElementById("time-value")
-      timeValueEl.innerHTML = (response.history[response.history.length - 1].trafficTime / 60).toFixed(0) + " min"
-    }
-
-    var maxNumLabels = 5
-
-    var canvas = document.getElementById("chart")
-    var context = canvas.getContext("2d")
-
-    var history = response.history
-
-    if(history.length >= 2){
-      var now = Date.now()
-
-      var dataArray = []
-      var labelArray = []
-      for(var i = 0; i < history.length; ++i){
-        dataArray.push(history[i].trafficTime / 60)
-
-        var minutes = ((now - history[i].timestamp) / 60000).toFixed(0)
-        var shouldLabel = (i % Math.ceil(history.length / maxNumLabels) == 0) || history.length <= maxNumLabels
-        labelArray.push(shouldLabel ? ("-" + minutes) : "")
+      if(response.history.length > 0){
+        var timeValueEl = document.getElementById("time-value")
+        timeValueEl.innerHTML = (response.history[response.history.length - 1].trafficTime / 60).toFixed(0) + " min"
       }
 
-      var data = {
-        labels: labelArray,
-        datasets: [
-          {
-            data: dataArray,
-            strokeColor: "rgba(151,151,151,1)"
-          }
-        ]
+      var maxNumLabels = 5
+
+      var canvas = document.getElementById("chart")
+      var context = canvas.getContext("2d")
+
+      var history = response.history
+
+      if(history.length >= 2){
+        var now = Date.now()
+
+        var dataArray = []
+        var labelArray = []
+        for(var i = 0; i < history.length; ++i){
+          dataArray.push(history[i].trafficTime / 60)
+
+          var minutes = ((now - history[i].timestamp) / 60000).toFixed(0)
+          var shouldLabel = (i % Math.ceil(history.length / maxNumLabels) == 0) || history.length <= maxNumLabels
+          labelArray.push(shouldLabel ? ("-" + minutes) : "")
+        }
+
+        var data = {
+          labels: labelArray,
+          datasets: [
+            {
+              data: dataArray,
+              strokeColor: "rgba(151,151,151,1)"
+            }
+          ]
+        }
+
+        var options = {showTooltips: false, bezierCurve: false, pointDot: false, datasetFill: false, scaleFontSize: 12, animation: false}
+
+        var lineChart = new Chart(context).Line(data, options)
       }
+      else{
+        showNoDataMessage()
+      }
+    })
+  }
 
-      var options = {showTooltips: false, bezierCurve: false, pointDot: false, datasetFill: false, scaleFontSize: 12}
-
-      var lineChart = new Chart(context).Line(data, options)
-    }
-    else{
-      showNoDataMessage()
-    }
-  })
+  refresh()
+  setInterval(refresh, 10000)
 }
