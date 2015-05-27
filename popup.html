@@ -5,7 +5,7 @@
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
         width: 477px;
-        height: 200px;
+        height: 220px;
       }
       input {
         display: inline-block;
@@ -63,17 +63,35 @@
 
       .chart{
         position: absolute;
-        left: 9px;
+        left: 49px;
         right: 10px;
         bottom: 10px;
-        top: 67px;
+        top: 87px;
       }
 
       .nodata{
         position: absolute;
-        top: 125px;
+        top: 135px;
         left: 23px;
         font-size: 12px;
+        color: rgb(102, 102, 102);
+      }
+
+      .title{
+        font-size: 12px;
+        position: absolute;
+        top: 72px;
+        left: 203px;
+        color: rgb(102, 102, 102);
+      }
+
+      .axis-label{
+        font-size: 12px;
+        position: absolute;
+        transform: rotate(-90deg);
+        color: rgb(102, 102, 102);
+        top: 135px;
+        left: -21px;
       }
 
     </style>
@@ -83,7 +101,9 @@
   <body>
     <div class="label">Start Address</div><input id="start" type="text"><div id="check1" class="check1 hidden">&#x2713;</div><div id="x1" class="x1 hidden">&#x2716;</div></input><div class="padding"></div>
     <div class="label">End Address</div><input id="end" type="text"><div id="check2" class="check2 hidden">&#x2713;</div><div id="x2" class="x2 hidden">&#x2716;</div></input>
-    <canvas id="chart" class="chart" width="474" height="139"></canvas>
+    <canvas id="chart" class="chart" width="434" height="139"></canvas>
+    <div id="title" class="title">Traffic History</div>
+    <div id="axis-label" class="axis-label">Travel Time (m)</div>
     <div id="nodata" class="nodata hidden">Traffic history will be displayed once enough traffic data has been collected.</div>
   </body>
 </html>

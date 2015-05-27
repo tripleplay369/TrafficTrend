@@ -64,6 +64,8 @@ window.clearHistory = function(){
 
 window.showNoDataMessage = function(){
   removeClass(document.getElementById("nodata"), "hidden")
+  addClass(document.getElementById("title"), "hidden")
+  addClass(document.getElementById("axis-label"), "hidden")
 }
 
 window.initialize = function(){
@@ -123,7 +125,7 @@ window.initialize = function(){
   endEl.onchange = changeFunction
 
   chrome.runtime.sendMessage({type: "get_history"}, function(response){
-    var maxNumLabels = 5
+    var maxNumLabels = 4
 
     var canvas = document.getElementById("chart")
     var context = canvas.getContext("2d")
@@ -153,7 +155,7 @@ window.initialize = function(){
         ]
       }
 
-      var options = {showTooltips: false, bezierCurve: false, pointDot: false, datasetFill: false}
+      var options = {showTooltips: false, bezierCurve: false, pointDot: false, datasetFill: false, scaleFontSize: 12}
 
       var lineChart = new Chart(context).Line(data, options)
     }
