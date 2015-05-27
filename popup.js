@@ -69,6 +69,13 @@ window.showNoDataMessage = function(){
   addClass(document.getElementById("bottom-label"), "hidden")
 }
 
+window.hideNoDataMessage = function(){
+  addClass(document.getElementById("nodata"), "hidden")
+  removeClass(document.getElementById("title"), "hidden")
+  removeClass(document.getElementById("axis-label"), "hidden")
+  removeClass(document.getElementById("bottom-label"), "hidden")
+}
+
 window.initialize = function(){
   startEl = document.getElementById("start")
   endEl = document.getElementById("end")
@@ -147,6 +154,8 @@ window.initialize = function(){
       var history = response.history
 
       if(history.length >= 2){
+        hideNoDataMessage()
+        
         var now = Date.now()
 
         var dataArray = []
