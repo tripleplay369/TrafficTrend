@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "Traffic Trend",
-  "description": "Displays the current trend for traffic between two locations (increasing or decreasing)",
+  "description": "Displays the current travel time and trend for traffic between two locations.  Great for deciding when to leave work.",
   "version": "1.0",
 
   "browser_action": {
