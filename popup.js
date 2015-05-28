@@ -138,7 +138,8 @@ window.initialize = function(){
   var refresh = function(){
     chrome.runtime.sendMessage({type: "get_history"}, function(response){
       var trendValueEl = document.getElementById("trend-value")
-      trendValueEl.innerHTML = response.trend
+      var trendMinutes = parseInt((response.trendVal / 60).toFixed(0))
+      trendValueEl.innerHTML = response.trend + " (" + (trendMinutes > 0 ? "+" : "") + trendMinutes + " min)"
       trendValueEl.style.color = response.trendColor
 
       if(response.history.length > 0){
@@ -152,16 +153,19 @@ window.initialize = function(){
       var context = canvas.getContext("2d")
 
       var history = response.history
+      var smoothed = response.smoothed
 
       if(history.length >= 2){
         hideNoDataMessage()
-        
+
         var now = Date.now()
 
         var dataArray = []
+        var smoothedDataArray = []
         var labelArray = []
         for(var i = 0; i < history.length; ++i){
           dataArray.push(history[i].trafficTime / 60)
+          smoothedDataArray.push(smoothed[i].trafficTime / 60)
 
           var minutes = ((now - history[i].timestamp) / 60000).toFixed(0)
           var shouldLabel = (i % Math.ceil(history.length / maxNumLabels) == 0) || history.length <= maxNumLabels
@@ -174,6 +178,10 @@ window.initialize = function(){
             {
               data: dataArray,
               strokeColor: "rgba(151,151,151,1)"
+            },
+            {
+              data: smoothedDataArray,
+              strokeColor: response.trendColor
             }
           ]
         }

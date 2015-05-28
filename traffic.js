@@ -1,9 +1,45 @@
-window.trafficHistory = []
-window.trend = ""
-window.trendColor = "#a59e27"
-window.currentInterval = null
+function reset() {
+  window.trafficHistory = []
+  window.smoothedTrafficHistory = []
+  window.trend = ""
+  window.trendColor = "#a59e27"
+  window.currentInterval = null
+  window.trendVal = 0
+  window.lastRunTime = 0
+  chrome.browserAction.setIcon({path: "default.png"})
+  chrome.browserAction.setBadgeText({text: ""})
 
-function updateIcon() {
+}
+reset()
+
+function smoothHistory() {
+  var s_xy = 0
+  var s_x = 0
+  var s_y = 0
+  var s_x2 = 0
+
+  for(var i = 0; i < window.trafficHistory.length; ++i){
+    var x = window.trafficHistory[i].timestamp
+    var y = window.trafficHistory[i].trafficTime
+    s_xy += x * y
+    s_x += x
+    s_y += y
+    s_x2 += x * x
+  }
+
+  var n = window.trafficHistory.length
+  var a = (n * s_xy - s_x * s_y) / (n * s_x2 - (s_x * s_x))
+  var b = (s_y - a * s_x) / n
+
+  window.smoothedTrafficHistory = []
+  for(var i = 0; i < window.trafficHistory.length; ++i){
+    var x = window.trafficHistory[i].timestamp
+    var y = window.trafficHistory[i].trafficTime
+    window.smoothedTrafficHistory.push({timestamp: x, trafficTime: a * x + b})
+  }
+}
+
+function updateTrend() {
   var minutesToCheck = 15
   var threshold = 0.1
 
@@ -12,7 +48,9 @@ function updateIcon() {
   var closest = null
   var smallestTimeDist = Number.MAX_VALUE
 
-  var history = window.trafficHistory
+  smoothHistory()
+
+  var history = window.smoothedTrafficHistory
   var newest = history[history.length - 1]
   for(var i = 0; i < history.length; ++i){
     var dist = Math.abs(target - history[i].timestamp)
@@ -22,15 +60,17 @@ function updateIcon() {
     }
   }
 
-  var thresholdTime = threshold * newest.trafficTime
+  var thresholdTime = threshold * closest.trafficTime
 
-  if(newest.trafficTime - closest.trafficTime < -thresholdTime){
+  window.trendVal = newest.trafficTime - closest.trafficTime
+
+  if(window.trendVal < -thresholdTime){
     chrome.browserAction.setIcon({path: "green.png"})
     chrome.browserAction.setBadgeBackgroundColor({color: '#2f8d16'})
     window.trend = "Decreasing"
     window.trendColor = '#2f8d16'
   }
-  else if(newest.trafficTime - closest.trafficTime > thresholdTime){
+  else if(window.trendVal > thresholdTime){
     chrome.browserAction.setIcon({path: "red.png"})
     chrome.browserAction.setBadgeBackgroundColor({color: '#bf1b1b'})
     window.trend = "Increasing"
@@ -46,8 +86,14 @@ function updateIcon() {
 
 function run() {
   var interval = 60000
+  var flushTime = 90000
   var retryInterval = 1000
   var maxHistoryLength = 15
+
+  if(Date.now() - window.lastRunTime > flushTime){
+    reset()
+  }
+  window.lastRunTime = Date.now()
 
   chrome.storage.sync.get(['start', 'end'], function(items){
     if(items['start'] && items['end']){
@@ -74,7 +120,7 @@ function run() {
         window.trafficHistory = window.trafficHistory.slice(-1 * maxHistoryLength)
 
         chrome.browserAction.setBadgeText({text: (time / 60).toFixed(0) + "m"})
-        updateIcon()
+        updateTrend()
         window.currentInterval = setTimeout(run, interval)
       }
       else{
@@ -88,17 +134,11 @@ run()
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   if(request.type == "get_history"){
-    sendResponse({history: window.trafficHistory, trend: window.trend, trendColor: window.trendColor})
+    sendResponse({history: window.trafficHistory, smoothed: window.smoothedTrafficHistory, trend: window.trend, trendColor: window.trendColor, trendVal: window.trendVal})
   }
   else if(request.type == "clear_history"){
     clearInterval(window.currentInterval)
-
-    window.trafficHistory = []
-    window.trendColor = "#a59e27"
-    window.trend = ""
-    chrome.browserAction.setIcon({path: "default.png"})
-
-    chrome.browserAction.setBadgeText({text: ""})
+    reset()
 
     run()
   }
